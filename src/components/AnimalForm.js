@@ -1,30 +1,25 @@
-import React, { useState } from 'react'
+import React from 'react';
+import { withFormik, Form, Field} from 'formik';
 
 const AnimalForm = (props) => {
-  const [animal, setAnimal] = useState({
-    species: ''
-  })
-
-  const handleChange = event => {
-    setAnimal({
-      ...animal,
-      [event.target.name]: event.target.value
-    })
-  }
-
-  const handleSubmit = event => {
-    event.preventDefault()
-    console.log(animal)
-  }
-
+  
   return (
     <div className="animal-form">
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="species" placeholder="Species" onChange={handleChange} />
+      <Form>
+        <Field type="text" name="species" placeholder="Species" />
         <button type="submit">Submit</button>
-      </form>
+      </Form>
     </div>
   )
 }
 
-export default AnimalForm
+export default withFormik({
+  mapPropsToValues: (values) => {
+    return {
+      species: values.species || 'def' 
+    }
+  },
+  handleSubmit: (values) => {
+    console.log(values)
+  }
+})(AnimalForm)
